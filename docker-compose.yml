@@ -1,0 +1,13 @@
+services:
+  db:
+    container_name: mysql
+    build:
+      dockerfile: build/mysql.Dockerfile
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+
+  
