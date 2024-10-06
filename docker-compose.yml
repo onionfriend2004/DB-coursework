@@ -1,6 +1,4 @@
 services:
-  flask:
-    
   db:
     container_name: mysql
     build:

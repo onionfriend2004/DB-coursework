@@ -1,4 +1,4 @@
-FROM mysql:latest
+FROM mysql:8.0
 
 ENV MYSQL_ALLOW_EMPTY_PASSWORD=yes
 ENV MYSQL_USER=user
