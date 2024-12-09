@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Меню отчётов{% endblock %}
+
+{% block content %}
+        <h1>Меню отчетов</h1>
+        <div class="report"><h3 class="report">Количество поставленных диагнозов за период</h3>
+            <a href="{{url_for('report_bp.create_report', name='diagnosis')}}" class="report">Создать</a><br />
+            <a href="{{url_for('report_bp.view_report', name='diagnosis')}}" class="report">Просмотр</a><br />
+        </div>
+        <div class="report"><h3 class="report">Количество принятых пациентов каждым врачем</h3>
+            <a href="{{url_for('report_bp.create_report', name='patient')}}" class="report">Создать</a><br />
+            <a href="{{url_for('report_bp.view_report', name='patient')}}" class="report">Просмотр</a><br />
+        </div>
+{% endblock %}

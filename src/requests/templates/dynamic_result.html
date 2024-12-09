@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Вывод запроса{% endblock %}
+{% block header %}
+    <a class="header" href="{{url_for('requests_bp.index_requests')}}">Меню запросов</a>
+{% endblock %}
+
+{% block content %}
+    <h2>{{table_title}}</h2>
+    <table border="1">
+        <tr class="title">
+            {% for col in header %}
+                <td>{{col}}</td>
+            {% endfor %}
+        </tr>
+        {% for row in rows %}
+        <tr>   
+            {% for col in row %}
+                <td>{{col}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <a class="back" href="{{ prev_page }}">Назад к вводу параметров</a>
+{% endblock %}

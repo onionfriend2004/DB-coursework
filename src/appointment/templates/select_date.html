@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Выбор даты{% endblock %}
+
+{% block content %}
+    <h1>Шаг 3</h1>
+    <h1>Выберите дату</h1>
+    <form method="POST" action="">
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" min="{{ today }}"  max="2030-12" required>
+        <button type="submit">Отправить</button>
+    </form>
+    <a class="back" href="{{ prev_page }}">Назад</a>
+{% endblock %}

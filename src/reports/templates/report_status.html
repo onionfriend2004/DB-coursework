@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Результат{% endblock %}
+{% block header %}
+    <a class="header" href="{{url_for('report_bp.report_menu')}}">Меню отчётов</a>
+{% endblock %}
+
+{% block content %}
+    <h1>{{status_title}}</h1>
+    <h2>{{status_msg}}</h2>
+    <a class="back" href="{{ prev_page }}">Назад к вводу параметров</a>
+    {% if report_name %}
+    <br>
+    <a href="{{ url_for('report_bp.view_report', name=report_name) }}">Перейти к просмотру отчёта</a>
+    {% endif %}
+{% endblock %}

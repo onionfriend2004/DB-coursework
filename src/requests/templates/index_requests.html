@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Запросы{% endblock %}
+
+{% block content %}
+    <h2>Запросы</h2>
+    <p>
+        <a href="{{ url_for('requests_bp.request_new_patients') }}" class="button">Количество приписавшихся к поликлинике за указанный год по месяцам</a>
+        <br>
+        <a href="{{ url_for('requests_bp.request_doctor_specialization') }}" class="button">Врачи указанной специальности</a>
+        <br>
+        <a href="{{ url_for('requests_bp.request_doctor') }}" class="button">Диагнозы, в которых есть указанные слова</a>
+        <br>
+        <a href="{{ url_for('requests_bp.request_doctor_hire_date') }}" class="button">Врачи, нанятые в указанные год и месяц</a>
+    </p>
+{% endblock %}

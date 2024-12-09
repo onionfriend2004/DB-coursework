@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Главное меню{% endblock %}
+
+{% block content %}
+    <h7> {{message}} </h7>
+    <h2>Главное меню клиники</h2>
+    <a href="{{url_for('requests_bp.index_requests')}}" class="button">Работа с запросами</a>
+    <a href="{{url_for('appointment_bp.basket_index')}}" class="button">Назначение приема</a>
+    <a href="{{url_for('report_bp.report_menu')}}" class="button">Работа с отчетами</a>
+    <a href="{{url_for('auth_bp.auth_index')}}" class="button">Авторизация</a>
+    {% if auth_status %}
+        <a href="{{url_for('exit_func')}}" class="button">Нажмите для выхода из системы</a>
+    {% endif %}
+{% endblock %}

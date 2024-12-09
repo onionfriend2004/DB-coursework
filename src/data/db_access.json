@@ -1,0 +1,5 @@
+{
+  "registrator": ["appointment_bp"],
+  "doctor": ["requests_bp"],
+  "manager": ["requests_bp", "report_bp"]
+}

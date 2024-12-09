@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Выбор специализации{% endblock %}
+
+{% block content %}
+    <h1>Шаг 2</h1>
+    <h2>Выбор специализации</h2>
+    <form method="POST" action="">
+        <label for="specialty">Выберите специальность:</label>
+        <select name="specialization" id="specialization">
+            {% for item in specialization %}
+                <option value="{{ item['specialization'] }}">{{ item['specialization'] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Отправить">
+    </form>
+<a class="back" href="{{ prev_page }}">Назад</a>
+{% endblock %}

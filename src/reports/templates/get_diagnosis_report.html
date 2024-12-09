@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Ввод параметров{% endblock %}
+{% block header %}
+    <a class="header" href="{{url_for('report_bp.report_menu')}}">Меню отчётов</a>
+{% endblock %}
+
+{% block content %}
+    <h1>Открыть отчёт по количеству поставленных диагнозов за период</h2>
+    <form method="POST" action="">
+        <label for="yearMonth" id="inputMonth">Выберите год и месяц:</label><br>
+        <input type="month" id="year_month" name="year_month" 
+            min="2000-01" max="2030-12" required>
+        <br><br>
+        <input type="submit" class="submit" id="year_month" value="Открыть отчёт"/>
+    </form>
+{% endblock %}

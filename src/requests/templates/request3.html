@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Запросы{% endblock %}
+
+{% block header %}
+    <a class="header" href="{{url_for('requests_bp.index_requests')}}">Меню запросов</a>
+{% endblock %}
+
+{% block content %}
+    <h2>Диагнозы по ключевому слову</h2>
+    <form action="{{ url_for('requests_bp.request_view', request_id='3') }}" method="post">
+        <label for="keyword">Укажите ключевое слово:</label>
+        <input type="text" id="keyword" name="keyword" required>
+        <input type="submit" value="Отправить">
+    </form>
+{% endblock %}

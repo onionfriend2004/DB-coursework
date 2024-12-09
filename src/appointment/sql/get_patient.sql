@@ -1,0 +1,1 @@
+SELECT card_number, patient_name FROM patients;

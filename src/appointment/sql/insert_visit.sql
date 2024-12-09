@@ -1,0 +1,2 @@
+INSERT INTO visits (doctor_id, main_complaints, prescriptions, diagnosis, appointment_date, appointment_time_start, appointment_time_end, patient_id, has_come)
+VALUES ('$doctor', NULL, NULL, NULL, '$appointment_date', '$appointment_time_start', '$appointment_time_end', '$card', NULL);

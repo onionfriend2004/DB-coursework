@@ -1,8 +1,9 @@
-FROM mysql:8.0
+FROM mysql:latest
 
 ENV MYSQL_ALLOW_EMPTY_PASSWORD=yes
 ENV MYSQL_USER=user
 ENV MYSQL_PASSWORD=password
 ENV MYSQL_DATABASE=database
 
-COPY ./db/init.sql /docker-entrypoint-initdb.d/
+COPY ./migrations/init.sql /docker-entrypoint-initdb.d/
+ADD ./sql.cnf /etc/mysql/conf.d/
