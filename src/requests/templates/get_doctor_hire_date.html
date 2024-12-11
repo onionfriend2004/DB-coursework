@@ -3,13 +3,13 @@
 {% block title %}Запросы{% endblock %}
 
 {% block header %}
-    <a class="text-white text-decoration-none h5" href="{{ url_for('requests_bp.index_requests') }}">Меню запросов</a>
+    <a class="text-white text-decoration-none h5" href="{{ url_for('requests_bp.request_index') }}">Меню запросов</a>
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <h2 class="my-4 text-center">Врачи, нанятые в указанные год и месяц</h2>
-    <form action="{{ url_for('requests_bp.request_view', request_id='4') }}" method="post" class="form-group">
+    <form action="{{ url_for('requests_bp.request_view', request_name='doctor_hire_date') }}" method="post" class="form-group">
         <div class="mb-3">
             <label for="year" class="form-label">Укажите год:</label>
             <input type="number" id="year" name="year" class="form-control" min="2000" required>

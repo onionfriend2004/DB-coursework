@@ -32,9 +32,7 @@ def basket_index():
     if 'basket' not in session:
         session['basket'] = {}
     current_basket = session.get('basket', {})
-    print("basketonload:", session.get('basket', {}))
     current_basket = form_basket(current_basket)
-    print(current_basket)
     return render_template('basket_dynamic.html', basket=current_basket)
 
 @blueprint_appointment.route('/', methods=['POST'])
@@ -42,7 +40,6 @@ def basket_index():
 def basket_main():
     session['basket'] = session.get('basket', {})
     current_basket = session['basket']
-    print("BASKET=", current_basket)
 
     if request.form.get('delete'):
         visit_id = request.form.get('visit_id')
@@ -68,7 +65,7 @@ def add_to_basket():
     appointment = session.get('appointment')
 
     if not patient or not specialization or not date or not appointment:
-        return render_template('error.html', error_message="Необходимо выбрать все параметры.")
+        return render_template('basket_error.html', error_message="Необходимо выбрать все параметры.")
 
     visit = {
         'patient': parse_patient(patient),
@@ -83,7 +80,7 @@ def add_to_basket():
         if (existing_visit['specialization'] == specialization and
             existing_visit['date'] == date and
             existing_visit['appointment']['time_start'] == visit['appointment']['time_start']):
-            return render_template('error.html', error_message="Такая запись уже существует в корзине.")
+            return render_template('basket_error.html', error_message="Такая запись уже существует в корзине.")
 
     session['basket'][str(uuid.uuid4())] = visit
     session.modified = True
@@ -93,7 +90,6 @@ def add_to_basket():
 @blueprint_appointment.route('/save_appointment', methods=['POST'])
 @group_required
 def save_appointment():
-    print(session.get('basket', {}))
     if not session.get('basket', {}):
         return redirect(url_for('appointment_bp.basket_index'))
     current_basket = session.get('basket', {})
@@ -102,7 +98,7 @@ def save_appointment():
         clear_basket()
         return render_template("order_finish.html")
     else:
-        return render_template("error.html", error_message=result.error_message)
+        return render_template("basket_error.html", error_message=result.error_message)
 
 def form_basket(visits_info: list[dict]) -> list[dict]:
     if 'basket' not in session or not visits_info:
@@ -131,9 +127,8 @@ def select_patient():
         patients = get_patient(current_app.config['db_config'])
         if patients.result:
             return render_template('select_patient.html', patients=patients.result, prev_page=url_for('appointment_bp.basket_index'))
-        return render_template('error.html', error_message=patients.error_message)
+        return render_template('basket_error.html', error_message=patients.error_message)
     patient = request.form.get('patient_id')
-    print(patient)
     session['patient'] = patient
     return redirect(url_for('appointment_bp.select_specialization'))
 
@@ -144,7 +139,7 @@ def select_specialization():
         specialization = get_specialization(current_app.config['db_config'])
         if specialization.result:
             return render_template('select_specialization.html', specialization=specialization.result, prev_page=url_for('appointment_bp.select_patient'))
-        return render_template('error.html', error_message=specialization.error_message)
+        return render_template('basket_error.html', error_message=specialization.error_message)
     specialization = request.form.get('specialization')
     session['specialization'] = specialization
     return redirect(url_for('appointment_bp.select_date'))
@@ -156,7 +151,6 @@ def select_date():
         today = date.today().isoformat()
         return render_template('select_date.html', today=today, prev_page=url_for('appointment_bp.select_specialization'))
     selected_date = request.form.get('date')
-    print(selected_date)
     session['date'] = selected_date
     return redirect(url_for('appointment_bp.select_time'))
 
@@ -165,15 +159,13 @@ def select_date():
 def select_time():
     if request.method == 'GET':
         specialization = session.get('specialization')
-        print(specialization)
         date = session.get('date')
-        print(date)
         if not specialization or not date:
-            return render_template('error.html', error_message="Необходимо выбрать специализацию и дату.")
+            return render_template('basket_error.html', error_message="Необходимо выбрать специализацию и дату.")
         time = get_time(current_app.config['db_config'], specialization=specialization, date=date)
         if time.result:
             return render_template('select_time.html', result=time.result, prev_page=url_for('appointment_bp.select_date'))
-        return render_template('error.html', error_message=time.error_message)
+        return render_template('basket_error.html', error_message=time.error_message)
     appointment = request.form.get('appointment')
     session['appointment'] = appointment
     return redirect(url_for('appointment_bp.add_to_basket'))

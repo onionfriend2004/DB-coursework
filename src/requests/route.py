@@ -7,41 +7,35 @@ blueprint_requests = Blueprint('requests_bp', __name__, template_folder='templat
 
 @blueprint_requests.route('/', methods=['GET'])
 @group_required
-def index_requests():
-    return render_template("index_requests.html")
+def request_index():
+    return render_template("request_index.html")
 
 @blueprint_requests.route('/new_patients', methods=['GET'])
 @group_required
 def request_new_patients():
-    return render_template("request1.html")
+    return render_template("get_new_patients.html")
 
 @blueprint_requests.route('/doctor_specialization', methods=['GET'])
 @group_required
 def request_doctor_specialization():
     response = fetch_doctor_specialization(current_app.config['db_config'])
     if response.status:
-        return render_template("request2.html", result=response.result)
+        return render_template("get_doctor_specialization.html", result=response.result)
     else:
         return render_template('error.html', error_message=response.error_message)
-
-@blueprint_requests.route('/doctor', methods=['GET'])
-@group_required
-def request_doctor():
-    return render_template("request3.html")
 
 @blueprint_requests.route('/doctor_hire_date', methods=['GET'])
 @group_required
 def request_doctor_hire_date():
-    return render_template("request4.html")
+    return render_template("get_doctor_hire_date.html")
 
-@blueprint_requests.route('/view/<request_id>', methods=['POST'])
+@blueprint_requests.route('/view/<request_name>', methods=['POST'])
 @group_required
-def request_view(request_id):
-    kwargs = {key: value for key, value in request.form.items() if key != 'request_id'}
-    print(kwargs)
-    response = get_request_data(current_app.config['db_config'], request_id, **kwargs)
-    result, schema = response.result
+def request_view(request_name):
+    kwargs = {key: value for key, value in request.form.items() if key != 'request_name'}
+    response = get_request_data(current_app.config['db_config'], request_name, **kwargs)
     if response.status:
-        return render_template('dynamic_result.html', table_title='Результаты запроса', header=schema, rows=result, prev_page=url_for('requests_bp.index_requests'))
+        result, schema = response.result
+        return render_template('dynamic_result.html', table_title='Результаты запроса', header=schema, rows=result, prev_page=url_for(f'requests_bp.request_{request_name}'))
     else:
-        return render_template('error.html', error_message=response.error_message)
+        return render_template('request_error.html', error_message=response.error_message, prev_page=url_for(f'requests_bp.request_{request_name}'))

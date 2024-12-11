@@ -19,10 +19,7 @@ def select_list(db_config: dict, _sql: str):
                 cursor.execute(_sql)
                 result = cursor.fetchall()
             except OperationalError as error:
-                print("error: ", error)
                 return result, schema
-            else:
-                print("Cursor no errors")
 
             schema = [item[0] for item in cursor.description]
 
@@ -46,12 +43,8 @@ def select_string(db_config: dict, _sql: str):
             try:
                 cursor.execute(_sql)
                 result = cursor.fetchall()
-                print(result)
             except OperationalError as error:
-                print("error: ", error)
                 return (result, schema)
-            else:
-                print("Cursor no errors")
 
             schema = [item[0] for item in cursor.description]
     return result, schema
@@ -87,7 +80,6 @@ def select_line(db_config: dict, _sql: str, curs=None):
             res_dict = dict([(item[0], result[i]) for i, item in enumerate(cursor.description)])
             return res_dict
 
-    print('With clause was exited early in select.py/select_line')
     return dict()
 
     return result, schema

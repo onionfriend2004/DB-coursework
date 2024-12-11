@@ -28,7 +28,6 @@ def create_new_report(db_config, year: int, month: int, report_name: str):
 
 def get_report_data(db_config, year: int, month: int, report_name: str):
     _sql = provider.get(f'get_{report_name}_report.sql', year=year, month=month)
-    print("SQL query:", _sql)
     result, schema = select_list(db_config, _sql)
     if not result:
         return InfoResponse((), error_message='Отчёт за указанный период не найден.', status=False)

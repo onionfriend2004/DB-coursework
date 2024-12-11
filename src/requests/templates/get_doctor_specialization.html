@@ -3,16 +3,17 @@
 {% block title %}Запросы{% endblock %}
 
 {% block header %}
-    <a class="text-white text-decoration-none h5" href="{{ url_for('requests_bp.index_requests') }}">Меню запросов</a>
+    <a class="text-white text-decoration-none h5" href="{{ url_for('requests_bp.request_index') }}">Меню запросов</a>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2 class="my-4 text-center">Врачи указанной специальности</h2>
-    <form action="{{ url_for('requests_bp.request_view', request_id='2') }}" method="post" class="form-group">
+    <h2 class="my-4 text-center">Врачи по указанной специальности</h2>
+    <form action="{{ url_for('requests_bp.request_view', request_name='doctor_specialization') }}" method="post" class="form-group">
         <div class="mb-3">
             <label for="specialization" class="form-label">Выберите специальность:</label>
             <select name="specialization" id="specialization" class="form-control" required>
+                <option value="" disabled selected>Выберите тип врача</option>
                 {% for specialization in result %}
                     <option value="{{ specialization }}">{{ specialization }}</option>
                 {% endfor %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Ошибка{% endblock %}
+
+{% block header %}
+    <a class="text-white text-decoration-none h5" href="{{ url_for('appointment_bp.basket_index') }}">Создание записей</a>
+{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <div class="alert alert-danger my-4" role="alert">
+        <h1 class="display-4">Ошибка</h1>
+        <h2>{{ error_message }}</h2>
+    </div>
+</div>
+{% endblock %}

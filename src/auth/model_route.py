@@ -13,5 +13,4 @@ def model_route_auth_req(db_config, user_input_data, sql_provider):
     result, schema = select_string(db_config, _sql)
     if result:
         return AuthResponse(result, error_message=error_message, status=True)
-    error_message = 'неправильный логин или пароль'
-    return AuthResponse(result, error_message=error_message, status=False)
+    return AuthResponse(result, error_message='неправильный логин или пароль', status=False)

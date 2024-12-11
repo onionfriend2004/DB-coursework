@@ -15,7 +15,6 @@ def insert(db_config: dict, _sql: str, curs=None):
 
             return result
         
-    print(insert, 'with clause exited early')
     return False
 
 

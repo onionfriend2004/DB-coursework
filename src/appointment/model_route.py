@@ -24,42 +24,37 @@ def transaction_visit(db_config: dict, basket: dict):
                         appointment_time_start=appointment['time_start'],
                         appointment_time_end=appointment['time_end'],
                         card=patient['patient_id'])
-                result = insert(db_config, _sql, cursor)
+                insert(db_config, _sql, cursor)
                 _sql = provider.get('update_schedule.sql', doctor=appointment['doctor_id'],
                         appointment_date=value['date'],
                         appointment_time_start=appointment['time_start'],
                         appointment_time_end=appointment['time_end'])
-                print(_sql)
-                result = update(db_config, _sql, cursor)
-                print(result)
+                update(db_config, _sql, cursor)
         return InfoResponse(tuple(), error_message="", status=True)
     except Exception as e:
         return InfoResponse(tuple(), error_message=f"Произошла непредвиденная ошибка: {e}",
                                     status=False)
 
 def get_patient(db_config):
-    error_message = ''
     _sql = provider.get('get_patient.sql')
     result = select_dict(db_config, _sql)
     if result:
-        return InfoResponse(result=result, error_message=error_message, status=True)
+        return InfoResponse(result=result, error_message='', status=True)
     else:
         return InfoResponse(result=(), error_message="No result", status=False)
 
 def get_specialization(db_config):
-    error_message = ''
     _sql = provider.get('get_specialization.sql')
     result = select_dict(db_config, _sql)
     if result:
-        return InfoResponse(result=result, error_message=error_message, status=True)
+        return InfoResponse(result=result, error_message='', status=True)
     else:
         return InfoResponse(result=(), error_message="No result", status=False)
 
 def get_time(db_config, specialization, date):
-    error_message = ''
     _sql = provider.get('get_appointment.sql', specialization=specialization, date=date)
     result = select_dict(db_config, _sql)
     if result:
-        return InfoResponse(result=result, error_message=error_message, status=True)
+        return InfoResponse(result=result, error_message='', status=True)
     else:
         return InfoResponse(result=(), error_message="No result", status=False)
