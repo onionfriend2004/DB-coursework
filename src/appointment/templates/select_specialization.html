@@ -2,6 +2,10 @@
 
 {% block title %}Выбор специализации{% endblock %}
 
+{% block header %}
+    <a class="header btn btn-primary btn-lg" href="{{url_for('appointment_bp.basket_index')}}">Создание записей</a>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center">Шаг 2: Выбор специализации</h1>
@@ -9,7 +13,7 @@
     <form method="POST" action="" class="mt-4">
         <div class="mb-3">
             <label for="specialization" class="form-label">Выберите специальность:</label>
-            <select name="specialization" id="specialization" class="form-select" required>
+            <select name="specialization" id="specialization" class="form-control" required>
                 <option value="" disabled selected>Выберите тип врача</option>
                 {% for item in specialization %}
                     <option value="{{ item['specialization'] }}">{{ item['specialization'] }}</option>

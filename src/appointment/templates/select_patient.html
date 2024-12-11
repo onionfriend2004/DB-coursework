@@ -2,6 +2,10 @@
 
 {% block title %}Выбор пациента{% endblock %}
 
+{% block header %}
+    <a class="header btn btn-primary btn-lg" href="{{url_for('appointment_bp.basket_index')}}">Создание записей</a>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center">Шаг 1: Выбор пациента</h1>
@@ -9,7 +13,7 @@
     <form method="POST" action="" class="mt-4">
         <div class="mb-3">
             <label for="patient_id" class="form-label">Пациент:</label>
-            <select id="patient_id" name="patient_id" class="form-select" required>
+            <select id="patient_id" name="patient_id" class="form-control" required>
                 <option value="" disabled selected>Выберите пациента</option>
                 {% for patient in patients %}
                     <option value="{{ patient['card_number'] }}|{{ patient['patient_name'] }}">{{ patient['patient_name'] }}</option>

@@ -1,4 +1,10 @@
-SELECT doctor_name, birth_date, specialization, employment_date
-FROM doctors
-WHERE YEAR(employment_date) = '$year'
-AND MONTH(employment_date) = '$month';
+SELECT
+    doctor_name AS 'Имя врача',
+    birth_date AS 'Дата рождения',
+    specialization AS 'Специальность',
+    employment_date AS 'Дата приема на_работу'
+FROM
+    doctors
+WHERE
+    YEAR(employment_date) = '$year' AND
+    MONTH(employment_date) = '$month';

@@ -2,6 +2,10 @@
 
 {% block title %}Выбор даты{% endblock %}
 
+{% block header %}
+    <a class="header btn btn-primary btn-lg" href="{{url_for('appointment_bp.basket_index')}}">Создание записей</a>
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <h1 class="text-center">Шаг 3: Выберите дату</h1>

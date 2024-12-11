@@ -3,7 +3,7 @@
 {% block title %}Запросы{% endblock %}
 
 {% block header %}
-    <a class="header" href="{{ url_for('requests_bp.index_requests') }}">Меню запросов</a>
+    <a class="header btn btn-primary btn-lg" href="{{url_for('appointment_bp.basket_index')}}">Создание записей</a>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
     <form method="POST" action="" class="mt-4">
         <div class="mb-3">
             <label for="appointment" class="form-label">Выберите специальность:</label>
-            <select name="appointment" id="appointment" class="form-select" required>
+            <select name="appointment" id="appointment" class="form-control" required>
                 <option value="" disabled selected>Выберите специалиста</option>
                 {% for appointment in result %}
                     <option value="{{ appointment['start'] }}|{{ appointment['end'] }}|{{ appointment['doctor_name'] }}|{{ appointment['doctor_id'] }}">
