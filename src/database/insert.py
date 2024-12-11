@@ -1,36 +1,31 @@
 from database.DBcm import DBContextManager
-from pymysql.err import OperationalError
+class CursorError(Exception):
+    pass
 
-
-def insert_one(db_config: dict, _sql: str):
-
+def insert(db_config: dict, _sql: str, curs=None):
+    if curs:
+        result = curs.execute(_sql)
+        return result
+    #else:
     with DBContextManager(db_config) as cursor:
         if cursor is None:
-            raise ValueError("Cursor not created")
+            raise CursorError("Cursor could not be created")
         else:
-            try:
+            result = cursor.execute(_sql)
+
+            return result
+        
+    print(insert, 'with clause exited early')
+    return False
+
+
+def update(db_config: dict, _sql: str, curs=None):
+    if curs:
+        curs.execute(_sql)
+    else:
+        with DBContextManager(db_config) as cursor:
+            if cursor is None:
+                raise ValueError("Cursor not created")
+            else:
                 cursor.execute(_sql)
-            except OperationalError as error:
-                print("error: ", error)
-                return False
-            else:
-                print("Cursor no errors")
-
-    return True
-
-def insert_many(db_config: dict, _sql: list):
-
-    with DBContextManager(db_config) as cursor:
-        if cursor is None:
-            raise ValueError("Cursor not created")
-        else:
-            try:
-                for sqll in _sql:
-                    cursor.execute(sqll)
-            except OperationalError as error:
-                print("error: ", error)
-                return False
-            else:
-                print("Cursor no errors")
-
-    return True
+    return True, 'success'

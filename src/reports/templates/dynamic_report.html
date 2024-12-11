@@ -1,25 +1,36 @@
 {% extends 'base.html' %}
 
 {% block title %}Вывод отчёта{% endblock %}
+
 {% block header %}
-    <a class="header" href="{{url_for('report_bp.report_menu')}}">Меню отчётов</a>
+    <a class="header" href="{{ url_for('report_bp.report_menu') }}">Меню отчётов</a>
 {% endblock %}
 
 {% block content %}
-    <h2>{{table_title}}</h2>
-    <table border="1">
-        <tr class="title">
-            {% for col in header %}
-                <td>{{col}}</td>
+<div class="container">
+    <h2 class="my-4 text-center">{{ table_title }}</h2>
+    
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                {% for col in header %}
+                    <th scope="col">{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    {% for col in row %}
+                        <td>{{ col }}</td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
-        </tr>
-        {% for row in rows %}
-        <tr>   
-            {% for col in row %}
-                <td>{{col}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
+        </tbody>
     </table>
-    <a class="back" href="{{ prev_page }}">Назад к вводу параметров</a>
+    
+    <div class="text-center mt-4">
+        <a href="{{ prev_page }}" class="btn btn-secondary btn-lg">Назад к вводу параметров</a>
+    </div>
+</div>
 {% endblock %}

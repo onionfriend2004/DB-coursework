@@ -3,17 +3,24 @@
 {% block title %}Выбор пациента{% endblock %}
 
 {% block content %}
-    <h1>Шаг 1</h1>
-    <h2>Выбор пациента</h2>
-    <form method="POST" action="">
-        <label for="patient_id">Пациент:</label>
-        <select id="patient_id" name="patient_id" required>
-            <option value="" disabled selected>Выберите пациента</option>
-            {% for patient in patients %}
-                <option value="{{ patient['card_number'] }}|{{ patient['patient_name'] }}">{{ patient['patient_name'] }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Выбрать">
+<div class="container mt-5">
+    <h1 class="text-center">Шаг 1: Выбор пациента</h1>
+
+    <form method="POST" action="" class="mt-4">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">Пациент:</label>
+            <select id="patient_id" name="patient_id" class="form-select" required>
+                <option value="" disabled selected>Выберите пациента</option>
+                {% for patient in patients %}
+                    <option value="{{ patient['card_number'] }}|{{ patient['patient_name'] }}">{{ patient['patient_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ prev_page }}" class="btn btn-secondary">Назад</a>
+            <button type="submit" class="btn btn-primary">Выбрать</button>
+        </div>
     </form>
-    <a class="back" href="{{ prev_page }}">Назад</a>
+</div>
 {% endblock %}

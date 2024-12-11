@@ -3,14 +3,44 @@
 {% block title %}Запросы{% endblock %}
 
 {% block content %}
-    <h2>Запросы</h2>
-    <p>
-        <a href="{{ url_for('requests_bp.request_new_patients') }}" class="button">Количество приписавшихся к поликлинике за указанный год по месяцам</a>
-        <br>
-        <a href="{{ url_for('requests_bp.request_doctor_specialization') }}" class="button">Врачи указанной специальности</a>
-        <br>
-        <a href="{{ url_for('requests_bp.request_doctor') }}" class="button">Диагнозы, в которых есть указанные слова</a>
-        <br>
-        <a href="{{ url_for('requests_bp.request_doctor_hire_date') }}" class="button">Врачи, нанятые в указанные год и месяц</a>
-    </p>
+<div class="container">
+    <h2 class="my-4 text-center">Запросы</h2>
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Количество приписавшихся к поликлинике за указанный год по месяцам</h5>
+                    <a href="{{ url_for('requests_bp.request_new_patients') }}" class="btn btn-primary btn-block">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Врачи указанной специальности</h5>
+                    <a href="{{ url_for('requests_bp.request_doctor_specialization') }}" class="btn btn-primary btn-block">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Диагнозы, в которых есть указанные слова</h5>
+                    <a href="{{ url_for('requests_bp.request_doctor') }}" class="btn btn-primary btn-block">Перейти</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Врачи, нанятые в указанные год и месяц</h5>
+                    <a href="{{ url_for('requests_bp.request_doctor_hire_date') }}" class="btn btn-primary btn-block">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

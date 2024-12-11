@@ -3,6 +3,10 @@
 {% block title %}Ошибка{% endblock %}
 
 {% block content %}
-    <h1>Ошибка</h1>
-    <h2>{{error_message}}</h2>
+<div class="text-center">
+    <div class="alert alert-danger my-4" role="alert">
+        <h1 class="display-4">Ошибка</h1>
+        <h2>{{ error_message }}</h2>
+    </div>
+</div>
 {% endblock %}

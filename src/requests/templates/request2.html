@@ -3,18 +3,24 @@
 {% block title %}Запросы{% endblock %}
 
 {% block header %}
-    <a class="header" href="{{url_for('requests_bp.index_requests')}}">Меню запросов</a>
+    <a class="header" href="{{ url_for('requests_bp.index_requests') }}">Меню запросов</a>
 {% endblock %}
 
 {% block content %}
-    <h2>Врачи указанной специальности</h2>
-    <form action="{{ url_for('requests_bp.request_view', request_id='2') }}" method="post">
-        <label for="specialty">Выберите специальность:</label>
-        <select name="specialization" id="specialization">
-            {% for specialization in result %}
-                <option value="{{ specialization }}">{{ specialization }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Отправить">
+<div class="container">
+    <h2 class="my-4 text-center">Врачи указанной специальности</h2>
+    <form action="{{ url_for('requests_bp.request_view', request_id='2') }}" method="post" class="form-group">
+        <div class="mb-3">
+            <label for="specialization" class="form-label">Выберите специальность:</label>
+            <select name="specialization" id="specialization" class="form-control" required>
+                {% for specialization in result %}
+                    <option value="{{ specialization }}">{{ specialization }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="text-center">
+            <input type="submit" value="Отправить" class="btn btn-primary btn-lg">
+        </div>
     </form>
+</div>
 {% endblock %}

@@ -1,14 +1,19 @@
 from flask import Blueprint, render_template, current_app, request
 from reports.model_route import check_report_exists, create_new_report, get_report_data
 from decorator.access import group_required
-
+from os.path import dirname, join as pathjoin
+import json
 blueprint_report = Blueprint('report_bp', __name__, template_folder='templates')
 
 
 @blueprint_report.route('/')
 @group_required
 def report_menu():
-    return render_template('reports_menu.html')
+    cur_dir = dirname(dirname(__file__))
+
+    with open(pathjoin(cur_dir, "data/reports.json")) as f:
+        reports = json.load(f)
+    return render_template('reports_menu.html', reports=reports)
 
 
 @blueprint_report.route('/create', methods=['GET', 'POST'])

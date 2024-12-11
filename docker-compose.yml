@@ -1,4 +1,16 @@
 services:
+  flask:
+    container_name: flask
+    build: 
+      dockerfile: build/flask.Dockerfile
+    command: python ./src/app.py
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 5001:5001
+    depends_on:
+      - db
+
   db:
     container_name: mysql
     build:

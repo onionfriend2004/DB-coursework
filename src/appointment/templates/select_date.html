@@ -3,12 +3,19 @@
 {% block title %}Выбор даты{% endblock %}
 
 {% block content %}
-    <h1>Шаг 3</h1>
-    <h1>Выберите дату</h1>
-    <form method="POST" action="">
-        <label for="date">Дата:</label>
-        <input type="date" id="date" name="date" min="{{ today }}"  max="2030-12" required>
-        <button type="submit">Отправить</button>
+<div class="container mt-5">
+    <h1 class="text-center">Шаг 3: Выберите дату</h1>
+    
+    <form method="POST" action="" class="mt-4">
+        <div class="mb-3">
+            <label for="date" class="form-label">Дата:</label>
+            <input type="date" id="date" name="date" class="form-control" min="{{ today }}" max="2030-12" required>
+        </div>
+        
+        <div class="d-flex justify-content-between">
+            <a href="{{ prev_page }}" class="btn btn-secondary">Назад</a>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
     </form>
-    <a class="back" href="{{ prev_page }}">Назад</a>
+</div>
 {% endblock %}

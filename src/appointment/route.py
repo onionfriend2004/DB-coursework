@@ -1,5 +1,5 @@
 from flask import Blueprint, session, redirect, render_template, current_app, request, url_for, make_response
-from appointment.model_route import model_route_transaction_visit, get_patient, get_specialization, get_time
+from appointment.model_route import transaction_visit, get_patient, get_specialization, get_time
 from decorator.access import group_required
 from database.sql_provider import SQLProvider
 from datetime import date
@@ -10,13 +10,29 @@ blueprint_appointment = Blueprint('appointment_bp', __name__, template_folder='t
 
 provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 
+def parse_appointment(appointment_str):
+    parts = appointment_str.split('|')
+    return {
+        'time_start': parts[0],
+        'time_end': parts[1],
+        'doctor_name': parts[2],
+        'doctor_id': parts[3]
+    }
+
+def parse_patient(patient_str):
+    parts = patient_str.split('|')
+    return {
+        'patient_id': parts[0],
+        'patient_name': parts[1]
+    }
+
 @blueprint_appointment.route('/', methods=['GET'])
 @group_required
 def basket_index():
     if 'basket' not in session:
-        session['basket'] = {str(session['login']): {}}
-    current_basket = session.get('basket',{})
-    print("basketonload:",session.get('basket',{}))
+        session['basket'] = {}
+    current_basket = session.get('basket', {})
+    print("basketonload:", session.get('basket', {}))
     current_basket = form_basket(current_basket)
     print(current_basket)
     return render_template('basket_dynamic.html', basket=current_basket)
@@ -24,15 +40,8 @@ def basket_index():
 @blueprint_appointment.route('/', methods=['POST'])
 @group_required
 def basket_main():
-    # Нужно извлечь id официанта:
-    login = str(session['login'])
-
-    # Получаем корзину:
-    session['basket'] = session.get('basket', {login: {}})
-    if login not in session['basket']:
-        session['basket'][login] = {}
-
-    current_basket = session['basket'][login]
+    session['basket'] = session.get('basket', {})
+    current_basket = session['basket']
     print("BASKET=", current_basket)
 
     if request.form.get('delete'):
@@ -43,18 +52,16 @@ def basket_main():
 
     return redirect(url_for('appointment_bp.basket_index'))
 
-
 @blueprint_appointment.route('/clear_basket')
 @group_required
 def clear_basket():
-    if session.get('basket',{}):
+    if session.get('basket', {}):
         session.pop('basket')
     return redirect(url_for('appointment_bp.basket_index'))
 
 @blueprint_appointment.route('/add_to_basket')
 @group_required
 def add_to_basket():
-    login = str(session['login'])
     patient = session.get('patient')
     specialization = session.get('specialization')
     date = session.get('date')
@@ -64,19 +71,21 @@ def add_to_basket():
         return render_template('error.html', error_message="Необходимо выбрать все параметры.")
 
     visit = {
-        'patient': patient,
+        'patient': parse_patient(patient),
         'specialization': specialization,
         'date': date,
-        'appointment': appointment
+        'appointment': parse_appointment(appointment)
     }
-    print(visit)
-    # Получаем корзину:
-    session['basket'] = session.get('basket', {login: {}})
-    if login not in session['basket']:
-        session['basket'][login] = {}
 
-    # Добавляем visit в корзину
-    session['basket'][login][str(uuid.uuid4())] = visit
+    session['basket'] = session.get('basket', {})
+
+    for existing_visit in session['basket'].values():
+        if (existing_visit['specialization'] == specialization and
+            existing_visit['date'] == date and
+            existing_visit['appointment']['time_start'] == visit['appointment']['time_start']):
+            return render_template('error.html', error_message="Такая запись уже существует в корзине.")
+
+    session['basket'][str(uuid.uuid4())] = visit
     session.modified = True
 
     return redirect(url_for('appointment_bp.basket_index'))
@@ -84,36 +93,32 @@ def add_to_basket():
 @blueprint_appointment.route('/save_appointment', methods=['POST'])
 @group_required
 def save_appointment():
-    if not session.get('basket',{}):
+    print(session.get('basket', {}))
+    if not session.get('basket', {}):
         return redirect(url_for('appointment_bp.basket_index'))
-    if not session.get('login',""):
-        return render_template("error.html", message="Вы не авторизованы на сайте, авторизируйтесь для регистрации заказа")
-    print("Order success")
     current_basket = session.get('basket', {})
-    login = session.get('login',"")
-    result = model_route_transaction_visit(current_app.config['db_config'], current_basket[login])
+    result = transaction_visit(current_app.config['db_config'], current_basket)
     if result.status:
         clear_basket()
         return render_template("order_finish.html")
     else:
-        return render_template("error.html", error_message="Заказ не был создан")
-    
+        return render_template("error.html", error_message=result.error_message)
+
 def form_basket(visits_info: list[dict]) -> list[dict]:
-    login = str(session['login'])
-    if 'basket' not in session or login not in session['basket'] or not visits_info:
+    if 'basket' not in session or not visits_info:
         return []
 
     basket = []
-    for visit_id, visit_info in session['basket'][login].items():
+    for visit_id, visit_info in session['basket'].items():
         visit = {
             'visit_id': visit_id,
-            'doctor_name': visit_info['appointment'].split('|')[2],
-            'doctor_id': visit_info['appointment'].split('|')[3],
+            'doctor_name': visit_info['appointment']['doctor_name'],
+            'doctor_id': visit_info['appointment']['doctor_id'],
             'appointment_date': visit_info['date'],
-            'appointment_time_start': visit_info['appointment'].split('|')[0],
-            'appointment_time_end': visit_info['appointment'].split('|')[1],
-            'patient_name': visit_info['patient'].split('|')[1],
-            'patient_id': visit_info['patient'].split('|')[0],
+            'appointment_time_start': visit_info['appointment']['time_start'],
+            'appointment_time_end': visit_info['appointment']['time_end'],
+            'patient_name': visit_info['patient']['patient_name'],
+            'patient_id': visit_info['patient']['patient_id'],
             'diagnosis': visit_info['specialization'],
         }
         basket.append(visit)

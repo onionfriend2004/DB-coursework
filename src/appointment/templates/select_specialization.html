@@ -3,16 +3,24 @@
 {% block title %}Выбор специализации{% endblock %}
 
 {% block content %}
-    <h1>Шаг 2</h1>
-    <h2>Выбор специализации</h2>
-    <form method="POST" action="">
-        <label for="specialty">Выберите специальность:</label>
-        <select name="specialization" id="specialization">
-            {% for item in specialization %}
-                <option value="{{ item['specialization'] }}">{{ item['specialization'] }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Отправить">
+<div class="container mt-5">
+    <h1 class="text-center">Шаг 2: Выбор специализации</h1>
+
+    <form method="POST" action="" class="mt-4">
+        <div class="mb-3">
+            <label for="specialization" class="form-label">Выберите специальность:</label>
+            <select name="specialization" id="specialization" class="form-select" required>
+                <option value="" disabled selected>Выберите тип врача</option>
+                {% for item in specialization %}
+                    <option value="{{ item['specialization'] }}">{{ item['specialization'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a href="{{ prev_page }}" class="btn btn-secondary">Назад</a>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
     </form>
-<a class="back" href="{{ prev_page }}">Назад</a>
+</div>
 {% endblock %}

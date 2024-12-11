@@ -3,14 +3,20 @@
 {% block title %}Запросы{% endblock %}
 
 {% block header %}
-    <a class="header" href="{{url_for('requests_bp.index_requests')}}">Меню запросов</a>
+    <a class="header" href="{{ url_for('requests_bp.index_requests') }}">Меню запросов</a>
 {% endblock %}
 
 {% block content %}
-    <h2>Количество приписавшихся к поликлинике за указанный год по месяцам</h2>
-    <form action="{{ url_for('requests_bp.request_view', request_id='1') }}" method="post">
-        <label for="year">Укажите год:</label>
-        <input type="number" id="year" name="year" min="2000" required>
-        <input type="submit" value="Отправить">
+<div class="container">
+    <h2 class="my-4 text-center">Количество приписавшихся к поликлинике за указанный год по месяцам</h2>
+    <form action="{{ url_for('requests_bp.request_view', request_id='1') }}" method="post" class="form-group">
+        <div class="mb-3">
+            <label for="year" class="form-label">Укажите год:</label>
+            <input type="number" id="year" name="year" class="form-control" min="2000" required>
+        </div>
+        <div class="text-center">
+            <input type="submit" value="Отправить" class="btn btn-primary btn-lg">
+        </div>
     </form>
+</div>
 {% endblock %}

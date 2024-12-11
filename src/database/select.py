@@ -64,7 +64,6 @@ def select_dict(db_config: dict, _sql: str):
     return result_dict
 
 def select_line(db_config: dict, _sql: str, curs=None):
-    print(select_string, _sql)
     if curs:
         curs.execute(_sql)
         result = curs.fetchall()

@@ -3,13 +3,21 @@
 {% block title %}Меню отчётов{% endblock %}
 
 {% block content %}
-        <h1>Меню отчетов</h1>
-        <div class="report"><h3 class="report">Количество поставленных диагнозов за период</h3>
-            <a href="{{url_for('report_bp.create_report', name='diagnosis')}}" class="report">Создать</a><br />
-            <a href="{{url_for('report_bp.view_report', name='diagnosis')}}" class="report">Просмотр</a><br />
+<div class="container">
+    <h1 class="my-4 text-center">Меню отчетов</h1>
+
+    <div class="row">
+        {% for report in reports %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title">{{ report.title }}</h3>
+                    <a href="{{ url_for('report_bp.create_report', name=report.name) }}" class="btn btn-primary btn-block">Создать</a>
+                    <a href="{{ url_for('report_bp.view_report', name=report.name) }}" class="btn btn-secondary btn-block mt-2">Просмотр</a>
+                </div>
+            </div>
         </div>
-        <div class="report"><h3 class="report">Количество принятых пациентов каждым врачем</h3>
-            <a href="{{url_for('report_bp.create_report', name='patient')}}" class="report">Создать</a><br />
-            <a href="{{url_for('report_bp.view_report', name='patient')}}" class="report">Просмотр</a><br />
-        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
